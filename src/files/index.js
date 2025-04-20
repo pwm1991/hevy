@@ -4,9 +4,14 @@ const log = require("../logger");
 const fs = require("fs").promises;
 const path = require("path");
 
+// Get absolute path to the HEVY_STORE
+const getFileStorePath = () => {
+  return path.join(process.cwd(), process.env.HEVY_STORE);
+};
+
 // check if FILE_STORE exists and return metadata
 const checkFileStore = async () => {
-  const FILE_STORE = path.join(process.cwd(), process.env.HEVY_STORE);
+  const FILE_STORE = getFileStorePath();
 
   try {
     await fs.access(FILE_STORE);
@@ -64,4 +69,5 @@ const checkFileStore = async () => {
 
 module.exports = {
   checkFileStore,
+  getFileStorePath,
 };

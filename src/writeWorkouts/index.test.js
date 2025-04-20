@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { appendWorkOutToFile } = require("./index");
+const { getFileStorePath } = require("../files");
 const log = require("../logger");
 
 // Mock dependencies
@@ -15,6 +16,9 @@ jest.mock("fs", () => {
   };
 });
 jest.mock("../logger");
+jest.mock("../files", () => ({
+  getFileStorePath: jest.fn().mockReturnValue("/mock/path/workouts.json"),
+}));
 
 describe("writeWorkouts", () => {
   beforeEach(() => {
@@ -22,7 +26,7 @@ describe("writeWorkouts", () => {
     jest.clearAllMocks();
 
     // Set up environment variable
-    process.env.HEVY_STORE = "/mock/path/workouts.json";
+    process.env.HEVY_STORE = "workouts.json";
   });
 
   afterEach(() => {

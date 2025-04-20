@@ -1,10 +1,11 @@
 const log = require("../logger");
 const fs = require("fs").promises;
+const { getFileStorePath } = require("../files");
 
 const appendWorkOutToFile = async (processedWorkouts) => {
-  // Store processed summaries
-  const summaryTarget = process.env.HEVY_STORE;
-  log.info(`Updating workout summaries in file, ${summaryTarget}`);
+  // Store processed summaries using consistent path resolution
+  const summaryTarget = getFileStorePath();
+  log.info(`Updating workout summaries in file: ${summaryTarget}`);
 
   if (!Array.isArray(processedWorkouts)) {
     log.error("processedWorkouts is not an array");

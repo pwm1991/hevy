@@ -16,7 +16,7 @@ jest.mock("path", () => ({
 }));
 
 // After mocks, require the modules
-const { checkFileStore } = require("./index");
+const { checkFileStore, getFileStorePath } = require("./index");
 const fs = require("fs").promises;
 const path = require("path");
 
@@ -28,6 +28,20 @@ describe("files module", () => {
     process.env.START_DATE = "2022-01-01T00:00:00.000Z";
   });
 
+  describe("getFileStorePath", () => {
+    test("returns absolute path using process.cwd and env variable", () => {
+      // Setup
+      path.join.mockReturnValue("/test/data.json");
+      
+      // Execute
+      const result = getFileStorePath();
+      
+      // Verify
+      expect(path.join).toHaveBeenCalledWith("/test", "data.json");
+      expect(result).toBe("/test/data.json");
+    });
+  });
+
   describe("checkFileStore", () => {
     test("returns default values when file does not exist", async () => {
       // Setup: File doesn't exist
@@ -37,8 +51,6 @@ describe("files module", () => {
       const result = await checkFileStore();
 
       // Verify
-      // The FILE_STORE path is created with path.join(process.cwd(), process.env.HEVY_STORE)
-      // Since we mocked process.cwd() to return '/test', expect('/test/data.json')
       expect(path.join).toHaveBeenCalledWith("/test", "data.json");
       expect(result).toEqual({
         exists: false,
