@@ -1,6 +1,6 @@
-const log = require("../logger");
-const fs = require("fs").promises;
-const { getFileStorePath } = require("../files");
+const log = require('../logger');
+const fs = require('fs').promises;
+const { getFileStorePath } = require('../files');
 
 const appendWorkOutToFile = async (processedWorkouts) => {
   // Store processed summaries using consistent path resolution
@@ -8,13 +8,13 @@ const appendWorkOutToFile = async (processedWorkouts) => {
   log.info(`Updating workout summaries in file: ${summaryTarget}`);
 
   if (!Array.isArray(processedWorkouts)) {
-    log.error("processedWorkouts is not an array");
+    log.error('processedWorkouts is not an array');
     return;
   }
 
   // If there are no new workouts to add, we can skip
   if (processedWorkouts.length === 0) {
-    log.info("No new workouts to add, skipping file update");
+    log.info('No new workouts to add, skipping file update');
     return;
   }
 
@@ -23,12 +23,12 @@ const appendWorkOutToFile = async (processedWorkouts) => {
   try {
     try {
       await fs.access(summaryTarget);
-      const fileContent = await fs.readFile(summaryTarget, "utf8");
+      const fileContent = await fs.readFile(summaryTarget, 'utf8');
       if (fileContent.trim()) {
         try {
           existingWorkouts = JSON.parse(fileContent);
           if (!Array.isArray(existingWorkouts)) {
-            log.error("Existing file content is not a JSON array");
+            log.error('Existing file content is not a JSON array');
             existingWorkouts = [];
           }
         } catch (parseErr) {
@@ -40,7 +40,7 @@ const appendWorkOutToFile = async (processedWorkouts) => {
       log.info(`File ${summaryTarget} does not exist, will create it`);
     }
   } catch (err) {
-    log.info("Could not read existing file, initializing as empty array");
+    log.info('Could not read existing file, initializing as empty array');
   }
 
   // Combine existing and new workouts
@@ -57,20 +57,16 @@ const appendWorkOutToFile = async (processedWorkouts) => {
   };
 
   const sortedWorkouts = allWorkouts.sort(
-    (a, b) => getStartTime(a) - getStartTime(b),
+    (a, b) => getStartTime(a) - getStartTime(b)
   );
 
-  // Write as JSON array
-  log.info("Writing workout data to file");
+  // Write as JSON array - pretty format for development, minified for production
+  log.info('Writing workout data to file');
   try {
-    await fs.writeFile(
-      summaryTarget,
-      JSON.stringify(sortedWorkouts, null, 2),
-      "utf8",
-    );
-    log.info("Successfully wrote workout data to file");
+    await fs.writeFile(summaryTarget, JSON.stringify(sortedWorkouts), 'utf8');
+    log.info('Successfully wrote workout data to file');
   } catch (err) {
-    log.error(["Error writing workout data to file", err]);
+    log.error(['Error writing workout data to file', err, typeof jsonString]);
   }
 };
 

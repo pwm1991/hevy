@@ -1,17 +1,17 @@
-require("dotenv").config();
-const log = require("../logger");
-const BASE_URL = "https://api.hevyapp.com/v1";
-const ENDPOINT = "/workouts/events";
+require('dotenv').config();
+const log = require('../logger');
+const BASE_URL = 'https://api.hevyapp.com/v1';
+const ENDPOINT = '/workouts/events';
 
-const { checkFileStore } = require("../files");
+const { checkFileStore } = require('../files');
 
 const callHevy = async (urlProperties) => {
   const headers = {
-    accept: "application/json",
-    "api-key": process.env.HEVY_KEY,
+    accept: 'application/json',
+    'api-key': process.env.HEVY_KEY,
   };
   const fullUrl = `${BASE_URL}${ENDPOINT}?${urlProperties}`;
-  log.info(`Fetching from Hevy API: ${fullUrl}`);
+  log.debug(fullUrl);
   const response = await fetch(fullUrl, {
     headers,
   });
@@ -20,7 +20,7 @@ const callHevy = async (urlProperties) => {
 };
 
 const getWorkouts = async () => {
-  log.info("Fetching workouts from Hevy API");
+  log.info('Fetching workouts from Hevy API');
   const { lastWorkout } = await checkFileStore();
 
   try {
@@ -31,17 +31,23 @@ const getWorkouts = async () => {
     const workouts = [];
     workouts.push(...hevyResponse.events);
 
-    const firstResponseTotalPages = hevyResponse.page_count;
-    if (firstResponseTotalPages > 1) {
-      for (let i = 2; i <= firstResponseTotalPages; i++) {
-        log.info(`Fetching page ${i} of ${firstResponseTotalPages}`);
-        urlProperties = `page=${i}&pageSize=${hevyPageLimit}&since=${lastWorkout}`;
-        hevyResponse = await callHevy(urlProperties);
-        workouts.push(...hevyResponse.events);
+    const totalPages = hevyResponse.page_count;
+    if (totalPages > 1) {
+      log.info(`Total pages: ${totalPages}`);
+      const fetchPromises = [];
+      for (let i = 2; i <= totalPages; i++) {
+        const pageProps = `page=${i}&pageSize=${hevyPageLimit}&since=${lastWorkout}`;
+        fetchPromises.push(callHevy(pageProps));
       }
+      const results = await Promise.all(fetchPromises);
+      results.forEach((res) => {
+        if (res && Array.isArray(res.events)) {
+          workouts.push(...res.events);
+        }
+      });
     }
 
-    log.info(`Total workouts parsed: ${workouts.length}`);
+    log.info(`Total workouts: ${workouts.length}`);
     return workouts;
   } catch (e) {
     log.error(e);

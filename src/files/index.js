@@ -1,15 +1,18 @@
-require("dotenv").config();
-const log = require("../logger");
+require('dotenv').config();
+const log = require('../logger');
 
-const fs = require("fs").promises;
-const path = require("path");
+const fs = require('fs').promises;
+const path = require('path');
 
-// Get absolute path to the HEVY_STORE
 const getFileStorePath = () => {
   return path.join(process.cwd(), process.env.HEVY_STORE);
 };
 
-// check if FILE_STORE exists and return metadata
+const noFileStoreDefault = {
+  firstWorkout: process.env.START_DATE,
+  lastWorkout: process.env.START_DATE,
+};
+
 const checkFileStore = async () => {
   const FILE_STORE = getFileStorePath();
 
@@ -18,52 +21,29 @@ const checkFileStore = async () => {
     log.info(`File store found at ${FILE_STORE}`);
   } catch (err) {
     log.info(`File store not found at ${FILE_STORE}`);
-    return {
-      exists: false,
-      firstWorkout: process.env.START_DATE,
-      lastWorkout: process.env.START_DATE,
-    };
-  }
-
-  const fileContent = await fs.readFile(FILE_STORE, "utf8");
-  if (!fileContent.trim()) {
-    return {
-      exists: true,
-      firstWorkout: process.env.START_DATE,
-      lastWorkout: process.env.START_DATE,
-    };
+    return noFileStoreDefault;
   }
 
   try {
+    const fileContent = await fs.readFile(FILE_STORE, 'utf8');
     const workouts = JSON.parse(fileContent);
 
     if (!Array.isArray(workouts) || workouts.length === 0) {
-      return {
-        exists: true,
-        firstWorkout: process.env.START_DATE,
-        lastWorkout: process.env.START_DATE,
-      };
+      return noFileStoreDefault;
     }
 
-    const firstWorkout = workouts[0];
-    const lastWorkout = workouts[workouts.length - 1];
-
     const metadata = {
-      exists: true,
-      firstWorkout: new Date(firstWorkout.start_time).toISOString(),
-      lastWorkout: new Date(lastWorkout.start_time).toISOString(),
+      firstWorkout: new Date(workouts[0].start_time).toISOString(),
+      lastWorkout: new Date(
+        workouts[workouts.length - 1].start_time
+      ).toISOString(),
     };
 
     log.info(`File store metadata: ${JSON.stringify(metadata)}`);
-    log.info(`Last workout found: ${metadata.lastWorkout}`);
     return metadata;
   } catch (err) {
     log.error(`Error parsing JSON for metadata: ${err.message}`);
-    return {
-      exists: true,
-      firstWorkout: process.env.START_DATE,
-      lastWorkout: process.env.START_DATE,
-    };
+    return noFileStoreDefault;
   }
 };
 

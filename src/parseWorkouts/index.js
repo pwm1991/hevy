@@ -1,6 +1,6 @@
-const log = require("../logger");
+const log = require('../logger');
 
-const { parseSets } = require("../parseSets");
+const { parseSets } = require('../parseSets');
 
 const parseDuration = (start_time, end_time) => {
   const start = new Date(start_time);
@@ -11,14 +11,14 @@ const parseDuration = (start_time, end_time) => {
 
 const accTotalWeight = (arr) => {
   if (!arr || arr.length === 0) {
-    log.error("Array is empty or undefined", { arr });
+    log.error('Array is empty or undefined', { arr });
     return 0;
   }
   let total = arr.reduce((acc, set) => {
     return acc + (set.totalWeightInKg || set.setsTotalWeight || 0);
   }, 0);
-  if (typeof total !== "number" || isNaN(total)) {
-    log.error("Total weight is not a number", { total });
+  if (typeof total !== 'number' || isNaN(total)) {
+    log.error('Total weight is not a number', { total });
     return 0;
   }
   return total;
@@ -35,10 +35,10 @@ const parseWorkouts = (workouts) => {
         return null;
       }
       let workouts = exercises.map((exercise) => {
-        let parsedSets = parseSets(exercise.sets);
+        let parsedSets = sets.length > 0 ? parseSets(exercise.sets) : [];
         let data = {
           title: exercise.title,
-          notes: exercise.notes || "",
+          notes: exercise.notes || '',
           supersetId: exercise.superset_id,
           ...parsedSets,
         };

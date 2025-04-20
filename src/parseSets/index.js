@@ -1,24 +1,20 @@
-const POUNDS_TO_KG = 0.45359237;
+const getSetWeight = (set) => {
+  const POUNDS_TO_KG = 0.45359237;
+  if (set.weight_kg > 0) return set.weight_kg;
+  if (set.weight_lb && set.weight_lb > 0) return set.weight_lb * POUNDS_TO_KG;
+  return process.env.MY_WEIGHT_IN_KG;
+};
 
 const parseSets = (sets) => {
-  if (!sets) {
-    throw new Error("No sets found");
-  }
   const reducedSetInformation = sets.map((set) => {
-    const { index, type, reps, weight_kg, weight_lb, rpe } = set;
-    const workoutMeasurementInKg = () => {
-      if (weight_kg > 0) return weight_kg;
-      if (weight_lb && weight_lb > 0) return weight_lb * POUNDS_TO_KG;
-      return process.env.MY_WEIGHT_IN_KG;
-    };
-    const workoutMeasurement = workoutMeasurementInKg();
+    const { index, type, reps, rpe } = set;
     return {
       reps,
       rpe,
       index,
       type,
-      weight: workoutMeasurement,
-      totalWeight: reps * workoutMeasurement || 0,
+      weight: getSetWeight(set),
+      totalWeight: reps * getSetWeight(set) || 0,
     };
   });
 
@@ -34,5 +30,4 @@ const parseSets = (sets) => {
 
 module.exports = {
   parseSets,
-  POUNDS_TO_KG,
 };
