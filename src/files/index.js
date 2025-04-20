@@ -13,7 +13,7 @@ const checkFileStore = async () => {
     log.info(`File store found at ${FILE_STORE}`);
     await sortFileStore(FILE_STORE);
   } catch (err) {
-    log.error(`File store not found at ${FILE_STORE}`);
+    log.info(`File store not found at ${FILE_STORE}`);
     return {
       exists: false,
       firstWorkout: process.env.START_DATE,

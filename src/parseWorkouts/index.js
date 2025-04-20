@@ -34,6 +34,9 @@ const parseWorkouts = (workouts) => {
       return null;
     }
     let workouts = exercises.map((exercise) => {
+      if (exercise.title === "Pull Up" || exercise.title === "Chin Up") {
+        log.info(1);
+      }
       let parsedSets = parseSets(exercise.sets);
       let data = {
         title: exercise.title,

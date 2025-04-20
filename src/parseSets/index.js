@@ -1,4 +1,3 @@
-const log = require("../logger");
 const POUNDS_TO_KG = 0.45359237;
 
 const parseSets = (sets) => {
@@ -7,18 +6,19 @@ const parseSets = (sets) => {
   }
   const reducedSetInformation = sets.map((set) => {
     const { index, type, reps, weight_kg, weight_lb, rpe } = set;
-    let weight = weight_kg ? weight_kg : weight_lb * POUNDS_TO_KG;
-    if (weight === 0) {
-      log.info(`Weight not detected '${type}', defaulting to MY_WEIGHT_IN_KG`);
-      weight = process.env.MY_WEIGHT_IN_KG;
-    }
+    const workoutMeasurementInKg = () => {
+      if (weight_kg > 0) return weight_kg;
+      if (weight_lb && weight_lb > 0) return weight_lb * POUNDS_TO_KG;
+      return process.env.MY_WEIGHT_IN_KG;
+    };
+    const workoutMeasurement = workoutMeasurementInKg();
     return {
       reps,
       rpe,
       index,
       type,
-      weight: weight_kg || weight_lb,
-      totalWeight: reps * weight || 0,
+      weight: workoutMeasurement,
+      totalWeight: reps * workoutMeasurement || 0,
     };
   });
 
