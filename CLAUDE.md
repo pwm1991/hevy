@@ -3,6 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Commands
+
 - Run all tests: `npm test`
 - Run tests in watch mode: `npm run test:watch`
 - Run a single test: `npx jest path/to/test.test.js`
@@ -10,6 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Clean temporary files: `npm run clean`
 
 ## Code Style Guidelines
+
 - Use CommonJS module system (require/module.exports)
 - Follow JavaScript conventions for variable naming (camelCase)
 - Error handling: Use try/catch blocks with appropriate logging

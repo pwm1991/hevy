@@ -7,7 +7,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "start": "node index.js",
-    "clean": "rm -rf hevy.jsonl"
+    "clean": "rm -rf hevy.jsonl",
+    "format": "prettier --write ."
   },
   "keywords": [
     "hevy",
@@ -22,6 +23,12 @@
     "pino": "^9.6.0"
   },
   "devDependencies": {
-    "pino-pretty": "^13.0.0"
+    "@eslint/js": "^9.25.0",
+    "eslint": "^9.25.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "globals": "^16.0.0",
+    "pino-pretty": "^13.0.0",
+    "prettier": "3.5.3"
   }
 }
