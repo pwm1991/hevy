@@ -1,0 +1,27 @@
+{
+  "name": "hevy-getter",
+  "version": "1.0.0",
+  "description": "Gets hevy workouts and makes blog posts",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "start": "node index.js",
+    "clean": "rm -rf hevy.jsonl"
+  },
+  "keywords": [
+    "hevy",
+    "api"
+  ],
+  "author": "pwm1991",
+  "license": "ISC",
+  "dependencies": {
+    "dedent": "^1.5.3",
+    "dotenv": "^16.4.7",
+    "jest": "^29.7.0",
+    "pino": "^9.6.0"
+  },
+  "devDependencies": {
+    "pino-pretty": "^13.0.0"
+  }
+}
