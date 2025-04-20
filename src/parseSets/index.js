@@ -1,3 +1,4 @@
+const log = require("../logger");
 const POUNDS_TO_KG = 0.45359237;
 
 const parseSets = (sets) => {
@@ -7,10 +8,6 @@ const parseSets = (sets) => {
   const reducedSetInformation = sets.map((set) => {
     const { index, type, reps, weight_kg, weight_lb, rpe } = set;
     let weight = weight_kg ? weight_kg : weight_lb * POUNDS_TO_KG;
-    if (type === "Pull Up") {
-      log.info(`Pull Up detected, using weight from environment variable`);
-      log.info(set);
-    }
     if (weight === 0) {
       log.info(`Weight not detected '${type}', defaulting to MY_WEIGHT_IN_KG`);
       weight = process.env.MY_WEIGHT_IN_KG;

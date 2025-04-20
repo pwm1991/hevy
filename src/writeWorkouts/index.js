@@ -1,6 +1,5 @@
 const log = require("../logger");
 const fs = require("fs");
-const path = require("path");
 
 const createFileIfNotExists = async (fileTarget) => {
   const fileExists = fs.existsSync(fileTarget);
@@ -14,7 +13,7 @@ const createFileIfNotExists = async (fileTarget) => {
   return fileExists;
 };
 
-const appendWorkOutToFile = async (processedWorkouts, rawWorkouts) => {
+const appendWorkOutToFile = async (processedWorkouts) => {
   // Store processed summaries
   const summaryTarget = process.env.HEVY_STORE;
   log.info(`Appending workout summaries to file, ${summaryTarget}`);

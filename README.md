@@ -1,11 +1,11 @@
 # Hevy Workout Tracker
 
-A tool for fetching and storing workout data from the Hevy API.
+A tool for fetching and storing workout data from the Hevy API using Claude Code aka vibez.
 
 ## Features
 
 - Fetches workout data from the Hevy API
-- Stores both raw API response data and processed workout summaries
+- Stores processed workout summaries
 - Tracks the latest workout timestamp to only fetch new workouts
 - Calculates total weight lifted and workout duration
 - Sorts workouts by start time
@@ -36,10 +36,7 @@ A tool for fetching and storing workout data from the Hevy API.
 
 The application stores data in two files:
 
-- `HEVY_STORE` (defined in .env) - Contains processed workout summaries
-- `raw_[HEVY_STORE]` - Contains the raw API response data
-
-Both files use JSONL format (one JSON object per line).
+- `HEVY_STORE` (defined in .env) - Contains processed workout summaries in a JSONL format.
 
 ## Commands
 
