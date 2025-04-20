@@ -44,3 +44,20 @@ Both files use JSONL format (one JSON object per line).
 ## Commands
 
 See CLAUDE.md for available commands.
+
+## Development
+
+### Code Formatting
+
+This project uses Prettier for code formatting. A pre-push git hook has been set up to automatically:
+
+1. Check if files being pushed need formatting
+2. Run the formatter if needed
+3. Commit the formatted files automatically
+4. Continue with the push
+
+You can also manually format code at any time with:
+
+```
+npm run format
+```
