@@ -38,14 +38,13 @@ const getWorkouts = async () => {
         urlProperties = `page=${i}&pageSize=${hevyPageLimit}&since=${lastWorkout}`;
         hevyResponse = await callHevy(urlProperties);
         workouts.push(...hevyResponse.events);
-        log.info(`Total workouts ${workouts.length}`);
       }
     }
 
     log.info(`Total workouts parsed: ${workouts.length}`);
     return workouts;
   } catch (e) {
-    error(e);
+    log.error(e);
     process.exit(1);
   }
 };

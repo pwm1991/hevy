@@ -28,35 +28,35 @@ const parseWorkouts = (workouts) => {
   if (!workouts) {
     return [];
   }
-  const parsedWorkouts = workouts.map((event) => {
-    const { id, title, start_time, end_time, exercises } = event.workout;
-    if (exercises.length === 0) {
-      return null;
-    }
-    let workouts = exercises.map((exercise) => {
-      if (exercise.title === "Pull Up" || exercise.title === "Chin Up") {
-        log.info(1);
+  const parsedWorkouts = workouts
+    .map((event) => {
+      const { id, title, start_time, end_time, exercises } = event.workout;
+      if (exercises.length === 0) {
+        return null;
       }
-      let parsedSets = parseSets(exercise.sets);
-      let data = {
-        title: exercise.title,
-        notes: exercise.notes || "",
-        supersetId: exercise.superset_id,
-        ...parsedSets,
+      let workouts = exercises.map((exercise) => {
+        let parsedSets = parseSets(exercise.sets);
+        let data = {
+          title: exercise.title,
+          notes: exercise.notes || "",
+          supersetId: exercise.superset_id,
+          ...parsedSets,
+        };
+        return data;
+      });
+      let workoutParsed = {
+        id,
+        title,
+        start_time: start_time,
+        end_time: end_time,
+        totalWeightInKg: accTotalWeight(workouts),
+        durationInMin: parseDuration(start_time, end_time),
+        workouts,
       };
-      return data;
-    });
-    let workoutParsed = {
-      id,
-      title,
-      start_time: start_time,
-      end_time: end_time,
-      totalWeightInKg: accTotalWeight(workouts),
-      durationInMin: parseDuration(start_time, end_time),
-      workouts,
-    };
-    return workoutParsed;
-  });
+      return workoutParsed;
+    })
+    .filter((workout) => workout !== null);
+
   return parsedWorkouts;
 };
 

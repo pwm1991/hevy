@@ -12,8 +12,7 @@ yarn-debug.log
 .env.production.local
 
 # Runtime data
-*.jsonl
-hevy.jsonl
+hevy.json
 
 # Build output
 dist/

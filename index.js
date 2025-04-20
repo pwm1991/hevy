@@ -19,7 +19,7 @@ const run = async () => {
   }
   const parsedWorkouts = await parseWorkouts(workouts);
 
-  // Store both the parsed workout summaries and the raw API response data
-  await appendWorkOutToFile(parsedWorkouts, workouts);
+  // Store the parsed workout summaries
+  await appendWorkOutToFile(parsedWorkouts);
 };
 run();

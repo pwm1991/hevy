@@ -9,6 +9,7 @@ A tool for fetching and storing workout data from the Hevy API using Claude Code
 - Tracks the latest workout timestamp to only fetch new workouts
 - Calculates total weight lifted and workout duration
 - Sorts workouts by start time
+- Uploads workout data to Claude Project for analysis
 
 ## Setup
 
@@ -16,7 +17,7 @@ A tool for fetching and storing workout data from the Hevy API using Claude Code
 
    ```
    HEVY_KEY=your_hevy_api_key
-   HEVY_STORE=path/to/store/workouts.jsonl
+   HEVY_STORE=path/to/store/workouts.json
    START_DATE=2023-01-01T00:00:00Z
    HEVY_PAGE_LIMIT=10
    ```
@@ -34,9 +35,9 @@ A tool for fetching and storing workout data from the Hevy API using Claude Code
 
 ## File Storage
 
-The application stores data in two files:
+The application stores data in:
 
-- `HEVY_STORE` (defined in .env) - Contains processed workout summaries in a JSONL format.
+- `HEVY_STORE` (defined in .env) - Contains processed workout summaries in a JSON array format.
 
 ## Commands
 

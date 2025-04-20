@@ -7,7 +7,7 @@ const options = pretty({
   level: logLevel,
   timestamp: pino.stdTimeFunctions.isoTime,
   redact: {
-    paths: ["email", "HEVY_KEY"],
+    paths: ["email", "HEVY_KEY", "ANTHROPIC_KEY", "GYM_BRO_PROJECT"],
   },
 });
 const log = pino(options);
