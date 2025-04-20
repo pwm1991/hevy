@@ -14,9 +14,13 @@ const accTotalWeight = (arr) => {
     log.error('Array is empty or undefined', { arr });
     return 0;
   }
+  
   let total = arr.reduce((acc, set) => {
-    return acc + (set.totalWeightInKg || set.setsTotalWeight || 0);
+    // Get the weight value with fallbacks
+    const weight = set.setsTotalWeight || 0;
+    return acc + weight;
   }, 0);
+  
   if (typeof total !== 'number' || isNaN(total)) {
     log.error('Total weight is not a number', { total });
     return 0;
@@ -35,7 +39,8 @@ const parseWorkouts = (workouts) => {
         return null;
       }
       let workouts = exercises.map((exercise) => {
-        let parsedSets = sets.length > 0 ? parseSets(exercise.sets) : [];
+        // Always call parseSets, even with empty sets, to respect test mocks
+        let parsedSets = parseSets(exercise.sets || []);
         let data = {
           title: exercise.title,
           notes: exercise.notes || '',

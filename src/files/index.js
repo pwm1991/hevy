@@ -8,10 +8,10 @@ const getFileStorePath = () => {
   return path.join(process.cwd(), process.env.HEVY_STORE);
 };
 
-const noFileStoreDefault = {
+const noFileStoreDefault = () => ({
   firstWorkout: process.env.START_DATE,
   lastWorkout: process.env.START_DATE,
-};
+});
 
 const checkFileStore = async () => {
   const FILE_STORE = getFileStorePath();
@@ -21,7 +21,7 @@ const checkFileStore = async () => {
     log.info(`File store found at ${FILE_STORE}`);
   } catch (err) {
     log.info(`File store not found at ${FILE_STORE}`);
-    return noFileStoreDefault;
+    return noFileStoreDefault();
   }
 
   try {
@@ -29,7 +29,7 @@ const checkFileStore = async () => {
     const workouts = JSON.parse(fileContent);
 
     if (!Array.isArray(workouts) || workouts.length === 0) {
-      return noFileStoreDefault;
+      return noFileStoreDefault();
     }
 
     const metadata = {
@@ -43,7 +43,7 @@ const checkFileStore = async () => {
     return metadata;
   } catch (err) {
     log.error(`Error parsing JSON for metadata: ${err.message}`);
-    return noFileStoreDefault;
+    return noFileStoreDefault();
   }
 };
 

@@ -63,10 +63,10 @@ const appendWorkOutToFile = async (processedWorkouts) => {
   // Write as JSON array - pretty format for development, minified for production
   log.info('Writing workout data to file');
   try {
-    await fs.writeFile(summaryTarget, JSON.stringify(sortedWorkouts), 'utf8');
+    await fs.writeFile(summaryTarget, JSON.stringify(sortedWorkouts, null, 2), 'utf8');
     log.info('Successfully wrote workout data to file');
   } catch (err) {
-    log.error(['Error writing workout data to file', err, typeof jsonString]);
+    log.error(['Error writing workout data to file', err]);
   }
 };
 
