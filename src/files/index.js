@@ -9,7 +9,6 @@ const getFileStorePath = () => {
 };
 
 const noFileStoreDefault = () => ({
-  firstWorkout: process.env.START_DATE,
   lastWorkout: process.env.START_DATE,
 });
 
@@ -33,7 +32,6 @@ const checkFileStore = async () => {
     }
 
     const metadata = {
-      firstWorkout: new Date(workouts[0].start_time).toISOString(),
       lastWorkout: new Date(
         workouts[workouts.length - 1].start_time
       ).toISOString(),

@@ -1,37 +1,25 @@
 # Hevy Workout Tracker
 
-A tool for fetching and storing workout data from the Hevy API using Claude Code aka vibez.
+A tool for fetching and storing workout data from [www.hevy.com](https://www.hevy.com)'s API.
+
+The core of this was written by hand, the idea was to publish workout data in between blog posts. But then I never wrote any blog posts and pivoted it towards just being a getter for my workouts, which I then upload into Claude and ask it to be my gym bro. I vibe coded using Claude Code in April some extra bits, hence why there's CLAUDE.md etc.
+
+At some point I want to play around with it creating/updating workouts as its all a bit too manual at the moment.s
 
 ## Features
 
 - Fetches workout data from the Hevy API
-- Stores processed workout summaries
-- Tracks the latest workout timestamp to only fetch new workouts
+- Stores processed workout summaries as a json file
 - Calculates total weight lifted and workout duration
-- Sorts workouts by start time
-- Uploads workout data to Claude Project for analysis
+- Delta based workout fetching.
+- Converts workouts in pounds to kilograms
+- Calculates bodyweight workout totals
 
 ## Setup
 
-1. Create a `.env` file with the following variables:
-
-   ```
-   HEVY_KEY=your_hevy_api_key
-   HEVY_STORE=path/to/store/workouts.json
-   START_DATE=2023-01-01T00:00:00Z
-   HEVY_PAGE_LIMIT=10
-   ```
-
-2. Install dependencies:
-
-   ```
-   npm install
-   ```
-
-3. Run the application:
-   ```
-   npm start
-   ```
+1. `cp .env.example .env` and fill in the blanks
+2. Install dependencies: `npm i`
+3. Run the application: `npm start`
 
 ## File Storage
 
@@ -45,17 +33,6 @@ See CLAUDE.md for available commands.
 
 ## Development
 
-### Code Formatting
-
-This project uses Prettier for code formatting. A pre-push git hook has been set up to automatically:
-
-1. Check if files being pushed need formatting
-2. Run the formatter if needed
-3. Commit the formatted files automatically
-4. Continue with the push
-
-You can also manually format code at any time with:
-
-```
-npm run format
-```
+- `npm format`
+- Prettier / ESLint etc
+- Pino

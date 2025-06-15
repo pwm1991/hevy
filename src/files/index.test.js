@@ -53,7 +53,6 @@ describe('files module', () => {
       // Verify
       expect(path.join).toHaveBeenCalledWith('/test', 'data.json');
       expect(result).toEqual({
-        firstWorkout: '2022-01-01T00:00:00.000Z',
         lastWorkout: '2022-01-01T00:00:00.000Z',
       });
     });
