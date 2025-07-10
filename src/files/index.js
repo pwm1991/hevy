@@ -33,7 +33,7 @@ const checkFileStore = async () => {
 
     const metadata = {
       lastWorkout: new Date(
-        workouts[workouts.length - 1].start_time
+        workouts[workouts.length - 1].startTime
       ).toISOString(),
     };
 

@@ -2,9 +2,9 @@ const log = require('../logger');
 
 const { parseSets } = require('../parseSets');
 
-const parseDuration = (start_time, end_time) => {
-  const start = new Date(start_time);
-  const end = new Date(end_time);
+const parseDuration = (startTime, endTime) => {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
   const duration = (end - start) / 60000;
   return Math.round(duration);
 };
@@ -14,13 +14,13 @@ const accTotalWeight = (arr) => {
     log.error('Array is empty or undefined', { arr });
     return 0;
   }
-  
+
   let total = arr.reduce((acc, set) => {
     // Get the weight value with fallbacks
     const weight = set.setsTotalWeight || 0;
     return acc + weight;
   }, 0);
-  
+
   if (typeof total !== 'number' || isNaN(total)) {
     log.error('Total weight is not a number', { total });
     return 0;
@@ -34,7 +34,7 @@ const parseWorkouts = (workouts) => {
   }
   const parsedWorkouts = workouts
     .map((event) => {
-      const { id, title, start_time, end_time, exercises } = event.workout;
+      const { id, title, startTime, endTime, exercises } = event.workout;
       if (exercises.length === 0) {
         return null;
       }
@@ -52,11 +52,18 @@ const parseWorkouts = (workouts) => {
       let workoutParsed = {
         id,
         title,
-        start_time: start_time,
-        end_time: end_time,
+        startTime: startTime,
+        endTime: endTime,
         totalWeightInKg: accTotalWeight(workouts),
-        durationInMin: parseDuration(start_time, end_time),
+        durationInMin: parseDuration(startTime, endTime),
         workouts,
+      };
+      workoutParsed.claude = {
+        id: workoutParsed.id.substring(6),
+        startTime: new Date(startTime),
+        durationInMin: workoutParsed.durationInMin,
+        totalWeightInKg: workoutParsed.totalWeightInKg,
+        title: workoutParsed.title,
       };
       return workoutParsed;
     })
