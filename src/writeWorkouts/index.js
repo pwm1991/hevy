@@ -46,12 +46,12 @@ const appendWorkOutToFile = async (processedWorkouts) => {
   // Combine existing and new workouts
   const allWorkouts = [...existingWorkouts, ...processedWorkouts];
 
-  // Sort by startTime if available
+  // Sort by start_time if available
   const getStartTime = (item) => {
-    if (item.startTime) {
-      return new Date(item.startTime);
-    } else if (item.workout && item.workout.startTime) {
-      return new Date(item.workout.startTime);
+    if (item.start_time) {
+      return new Date(item.start_time);
+    } else if (item.workout && item.workout.start_time) {
+      return new Date(item.workout.start_time);
     }
     return new Date(0); // fallback
   };
@@ -63,7 +63,11 @@ const appendWorkOutToFile = async (processedWorkouts) => {
   // Write as JSON array - pretty format for development, minified for production
   log.info('Writing workout data to file');
   try {
-    await fs.writeFile(summaryTarget, sortedWorkouts);
+    await fs.writeFile(
+      summaryTarget,
+      JSON.stringify(sortedWorkouts, null, 2),
+      'utf8'
+    );
     log.info('Successfully wrote workout data to file');
   } catch (err) {
     log.error(['Error writing workout data to file', err]);

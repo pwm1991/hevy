@@ -59,8 +59,7 @@ describe('parseWorkouts', () => {
     expect(result[0]).toMatchObject({
       id: '123',
       title: 'Test Workout',
-      startTime: '2023-01-01T10:00:00Z',
-      endTime: '2023-01-01T11:00:00Z',
+      date: '2023-01-01',
       durationInMin: 60,
     });
     expect(result[0].workouts).toHaveLength(2);

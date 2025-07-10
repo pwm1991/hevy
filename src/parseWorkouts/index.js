@@ -2,9 +2,9 @@ const log = require('../logger');
 
 const { parseSets } = require('../parseSets');
 
-const parseDuration = (startTime, endTime) => {
-  const start = new Date(startTime);
-  const end = new Date(endTime);
+const parseDuration = (start_time, end_time) => {
+  const start = new Date(start_time);
+  const end = new Date(end_time);
   const duration = (end - start) / 60000;
   return Math.round(duration);
 };
@@ -34,7 +34,7 @@ const parseWorkouts = (workouts) => {
   }
   const parsedWorkouts = workouts
     .map((event) => {
-      const { id, title, startTime, endTime, exercises } = event.workout;
+      const { id, title, start_time, end_time, exercises } = event.workout;
       if (exercises.length === 0) {
         return null;
       }
@@ -42,30 +42,21 @@ const parseWorkouts = (workouts) => {
         // Always call parseSets, even with empty sets, to respect test mocks
         let parsedSets = parseSets(exercise.sets || []);
         let data = {
-          title: exercise.title,
+          exercise: exercise.title,
           notes: exercise.notes || '',
           supersetId: exercise.superset_id,
           ...parsedSets,
         };
         return data;
       });
-      let workoutParsed = {
+      return {
         id,
         title,
-        startTime: startTime,
-        endTime: endTime,
+        date: start_time.slice(0, 10),
         totalWeightInKg: accTotalWeight(workouts),
-        durationInMin: parseDuration(startTime, endTime),
+        durationInMin: parseDuration(start_time, end_time),
         workouts,
       };
-      workoutParsed.claude = {
-        id: workoutParsed.id.substring(6),
-        startTime: new Date(startTime),
-        durationInMin: workoutParsed.durationInMin,
-        totalWeightInKg: workoutParsed.totalWeightInKg,
-        title: workoutParsed.title,
-      };
-      return workoutParsed;
     })
     .filter((workout) => workout !== null);
 

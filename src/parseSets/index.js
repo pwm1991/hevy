@@ -10,9 +10,9 @@ const parseSets = (sets) => {
   const reducedSetInformation = sets.map((set) => {
     const { index, type, reps, rpe } = set;
     return {
+      index,
       reps,
       rpe,
-      index,
       type,
       weight: getSetWeight(set),
       totalWeight: reps * getSetWeight(set) || 0,
@@ -31,5 +31,5 @@ const parseSets = (sets) => {
 
 module.exports = {
   parseSets,
-  POUNDS_TO_KG
+  POUNDS_TO_KG,
 };
