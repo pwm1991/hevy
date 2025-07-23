@@ -40,8 +40,8 @@ describe('writeWorkouts', () => {
       fs.promises.access.mockRejectedValue(new Error('File not found'));
 
       const mockWorkouts = [
-        { id: '1', exercise: 'Squat', date: '2023-01-01' },
-        { id: '2', exercise: 'Bench Press', date: '2023-01-01' },
+        { id: '1', ex: 'Squat', date: '2023-01-01' },
+        { id: '2', ex: 'Bench Press', date: '2023-01-01' },
       ];
 
       // Execute
@@ -64,8 +64,8 @@ describe('writeWorkouts', () => {
       fs.promises.readFile.mockResolvedValue('');
 
       const mockWorkouts = [
-        { id: '1', exercise: 'Squat', date: '2023-01-01' },
-        { id: '2', exercise: 'Bench Press', date: '2023-01-01' },
+        { id: '1', ex: 'Squat', date: '2023-01-01' },
+        { id: '2', ex: 'Bench Press', date: '2023-01-01' },
       ];
 
       // Execute
@@ -90,7 +90,7 @@ describe('writeWorkouts', () => {
       const existingWorkouts = [
         {
           id: 'existing1',
-          exercise: 'Deadlift',
+          ex: 'Deadlift',
           date: '2023-01-01',
           startTime: '2023-01-01T10:00:00Z',
         },
@@ -100,7 +100,7 @@ describe('writeWorkouts', () => {
       const newWorkouts = [
         {
           id: 'new1',
-          exercise: 'Squat',
+          ex: 'Squat',
           date: '2023-01-02',
           startTime: '2023-01-02T10:00:00Z',
         },
@@ -177,7 +177,7 @@ describe('writeWorkouts', () => {
 
       const newWorkout = {
         id: '3',
-        exercise: 'Deadlift',
+        ex: 'Deadlift',
         startTime: '2023-01-03T10:00:00Z',
       };
 

@@ -43,8 +43,18 @@ const appendWorkOutToFile = async (processedWorkouts) => {
     log.info('Could not read existing file, initializing as empty array');
   }
 
-  // Combine existing and new workouts
-  const allWorkouts = [...existingWorkouts, ...processedWorkouts];
+  // Combine existing and new workouts, deduplicating by ID
+  const combinedWorkouts = [...existingWorkouts, ...processedWorkouts];
+  const workoutMap = new Map();
+  
+  // Use Map to deduplicate by ID, keeping the latest entry
+  combinedWorkouts.forEach(workout => {
+    if (workout.id) {
+      workoutMap.set(workout.id, workout);
+    }
+  });
+  
+  const allWorkouts = Array.from(workoutMap.values());
 
   // Sort by start_time if available
   const getStartTime = (item) => {

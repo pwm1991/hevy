@@ -9,23 +9,23 @@ const getSetWeight = (set) => {
 const parseSets = (sets) => {
   const reducedSetInformation = sets.map((set) => {
     const { index, type, reps, rpe } = set;
-    return {
+    let data = {
       index,
-      reps,
-      rpe,
       type,
+      reps,
+      rpe: rpe || undefined,
       weight: getSetWeight(set),
-      totalWeight: reps * getSetWeight(set) || 0,
     };
+    Object.keys(data).forEach((key) => {
+      if (data[key] === undefined) {
+        delete data[key];
+      }
+    });
+    return data;
   });
-
-  const setsTotalWeight = reducedSetInformation.reduce((acc, set) => {
-    return acc + set.totalWeight;
-  }, 0);
 
   return {
     sets: reducedSetInformation,
-    setsTotalWeight,
   };
 };
 

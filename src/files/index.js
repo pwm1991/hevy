@@ -31,10 +31,10 @@ const checkFileStore = async () => {
       return noFileStoreDefault();
     }
 
+    let lastWorkout = new Date(workouts[0].date);
+    lastWorkout.setHours(lastWorkout.getHours() + 1);
     const metadata = {
-      lastWorkout: new Date(
-        workouts[workouts.length - 1].startTime
-      ).toISOString(),
+      lastWorkout: lastWorkout.toISOString(),
     };
 
     log.info(`File store metadata: ${JSON.stringify(metadata)}`);

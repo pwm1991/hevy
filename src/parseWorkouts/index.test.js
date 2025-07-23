@@ -14,7 +14,7 @@ describe('parseWorkouts', () => {
     expect(parseWorkouts([])).toEqual([]);
   });
 
-  test('parses workout with exercises correctly', () => {
+  test('parses workout with exs correctly', () => {
     // Setup mock data
     const mockWorkout = {
       workout: {
@@ -22,7 +22,7 @@ describe('parseWorkouts', () => {
         title: 'Test Workout',
         startTime: '2023-01-01T10:00:00Z',
         endTime: '2023-01-01T11:00:00Z',
-        exercises: [
+        exs: [
           {
             title: 'Bench Press',
             notes: 'Heavy day',
@@ -43,12 +43,7 @@ describe('parseWorkouts', () => {
     parseSets.mockImplementation((sets) => ({
       sets: sets.map((set) => ({
         ...set,
-        totalWeight: set.weight_kg * set.reps,
       })),
-      setsTotalWeight: sets.reduce(
-        (acc, set) => acc + set.weight_kg * set.reps,
-        0
-      ),
     }));
 
     // Execute
@@ -60,7 +55,7 @@ describe('parseWorkouts', () => {
       id: '123',
       title: 'Test Workout',
       date: '2023-01-01',
-      durationInMin: 60,
+      duration: 60,
     });
     expect(result[0].workouts).toHaveLength(2);
     expect(result[0].workouts[0].title).toBe('Bench Press');
@@ -68,14 +63,14 @@ describe('parseWorkouts', () => {
     expect(parseSets).toHaveBeenCalledTimes(2);
   });
 
-  test('handles workout with no exercises', () => {
+  test('handles workout with no exs', () => {
     const mockWorkout = {
       workout: {
         id: '123',
         title: 'Empty Workout',
         startTime: '2023-01-01T10:00:00Z',
         endTime: '2023-01-01T10:30:00Z',
-        exercises: [],
+        exs: [],
       },
     };
 
@@ -90,9 +85,9 @@ describe('parseWorkouts', () => {
         title: 'Test Workout',
         startTime: '2023-01-01T10:00:00Z',
         endTime: '2023-01-01T10:45:00Z',
-        exercises: [
+        exs: [
           {
-            title: 'Test Exercise',
+            title: 'Test ex',
             sets: [{ weight_kg: 10, reps: 10 }],
           },
         ],
@@ -101,11 +96,10 @@ describe('parseWorkouts', () => {
 
     parseSets.mockReturnValue({
       sets: [],
-      setsTotalWeight: 100,
     });
 
     const result = parseWorkouts([mockWorkout]);
-    expect(result[0].durationInMin).toBe(45);
+    expect(result[0].duration).toBe(45);
   });
 
   test('accumulates total weight correctly', () => {
@@ -115,9 +109,9 @@ describe('parseWorkouts', () => {
         title: 'Test Workout',
         startTime: '2023-01-01T10:00:00Z',
         endTime: '2023-01-01T11:00:00Z',
-        exercises: [
-          { title: 'Exercise 1', sets: [] },
-          { title: 'Exercise 2', sets: [] },
+        exs: [
+          { title: 'ex 1', sets: [] },
+          { title: 'ex 2', sets: [] },
         ],
       },
     };
@@ -125,14 +119,12 @@ describe('parseWorkouts', () => {
     parseSets
       .mockReturnValueOnce({
         sets: [],
-        setsTotalWeight: 100,
       })
       .mockReturnValueOnce({
         sets: [],
-        setsTotalWeight: 150,
       });
 
     const result = parseWorkouts([mockWorkout]);
-    expect(result[0].totalWeightInKg).toBe(250);
+    expect(result[0].totalKg).toBe(250);
   });
 });
